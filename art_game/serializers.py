@@ -15,3 +15,12 @@ class AnswerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Answer
         fields = '__all__'
+
+
+class QuestionWithAnswersSerializer(serializers.ModelSerializer):
+
+    answers = AnswerSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = models.Question
+        fields = ['image', 'answers']

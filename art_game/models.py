@@ -19,7 +19,8 @@ class Answer(models.Model):
     is_correct = models.BooleanField()
     question_id = models.ForeignKey(
         Question,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='answers'
     )
 
     def __str__(self):

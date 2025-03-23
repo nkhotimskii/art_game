@@ -23,6 +23,11 @@ from art_game import views
 router = routers.DefaultRouter()
 router.register(r'questions', views.QuestionViewSet)
 router.register(r'answers', views.AnswerViewSet)
+router.register(
+    r'questions-with-answers',
+    views.QuestionWithAnswersViewSet,
+    basename='questions-with-answers'
+)
 
 urlpatterns = [
     path('', include(router.urls)),
