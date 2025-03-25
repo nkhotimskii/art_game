@@ -26,10 +26,10 @@ async def answer_handler(
     questions = data["questions"]
     question_number = data["question_number"]
     if  len(questions) > question_number:
-        image_name = data["image"]
+        question = questions[question_number]
+        image_name = question["image"]
         image_path = os.path.join(IMAGES_FOLDER, image_name)
         image = FSInputFile(image_path)
-        question = questions[question_number]
         answers = question["answers"]
         answers_markup = get_answers_markup(answers)
         await cb.message.answer_photo(
