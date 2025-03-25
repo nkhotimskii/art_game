@@ -1,0 +1,28 @@
+services:
+
+  bot:
+    build:
+      context: ./bot
+    image: bot
+    container_name: bot
+    env_file:
+      - .env
+    volumes:
+      - ./bot/app:/app
+      - ${IMAGES_LOCAL_DIRECTORY}:/app/images
+    command:
+      python main.py --reload
+    restart: unless-stopped
+
+  art_game:
+    build:
+      context: .
+    image: art_game
+    container_name: art_game
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000
