@@ -22,10 +22,16 @@ async def answer_handler(
     if is_correct_answer:
         correct += 1
         await state.update_data(correct=correct)
+        answer_text = "✅Правильно! Молодец."
+    else:
+        answer_text = "Неправильно."
+    await cb.message.answer(
+        text=answer_text
+    )
     # Selecting a question
     questions = data["questions"]
     question_number = data["question_number"]
-    if  len(questions) > question_number:
+    if len(questions) > question_number:
         question = questions[question_number]
         image_name = question["image"]
         image_path = os.path.join(IMAGES_FOLDER, image_name)
@@ -42,6 +48,8 @@ async def answer_handler(
         question_number += 1
         await state.update_data(question_number=question_number)
     else:
+        result = correct / len(questions) * 100
         await cb.message.answer(
-            text=f"Ваш результат: {correct*10}%"
+            text=f"Ваш результат: {result}%"
         )
+        await state.clear()
