@@ -48,7 +48,7 @@ async def answer_handler(
         question_number += 1
         await state.update_data(question_number=question_number)
     else:
-        result = correct / len(questions) * 100
+        result = int(correct / len(questions) * 100)
         await cb.message.answer(
             text=f"Ваш результат: {result}%"
         )
