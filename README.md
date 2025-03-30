@@ -10,28 +10,26 @@ To launch the project with Docker, it is required:
 3. API_URL=`<api_url>`
 4. BOT_TOKEN=`<bot_token>`
 5. IMAGES_LOCAL_DIRECTORY=`<images_local_directory>`
-- To launch the command that makes migrations:
-```
-python manage.py makemigrations
-```
-- And then:
-```
-python manage.py migrate
-```
-- Create a super user with the following command:
-```
-python manage.py createsuperuser
-```
-- Use the following command to launch the project with Docker:
+
+- To launch the docker compose file:
 ```
 docker compose up -d
 ```
 
 # Tests Creation
 
-Navigate to the admin panel that is located on the 8000 port (if you didn't change docker compose settings) of your server. It has an "/admin" endpoint.
+To create your own test (using the admin panel), it is required:
 
-To create a test, you should add the data into the questions and answers database tables. In the questions model, there is an "image" field. You should add the filename of the image, that you would like to add to the test. Also, you should add the answers to a related question. The answer(s) that is (are) correct, should be marked as correct.
+- To create a super user (if you didn't do this already), using commands:
+  ```
+  docker exec -it art_game bash
+  ```
+  ```
+  python manage.py createsuperuser
+  ```
+- To enter the admin panel (add ":8000/admin" after the server address, if you didn't change anything).
+- To add questions and answers. The question should have an image filename. The answers should have a reference to the question, an answer text, a correct/incorrect flag.
+- To load images to the images project folder.
 
 After launching the bot, you should see something like this:
 
