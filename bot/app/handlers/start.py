@@ -24,12 +24,26 @@ async def start_handler(msg: Message, state: FSMContext) -> None:
     image_path = os.path.join(IMAGES_FOLDER, image_name)
     image = FSInputFile(image_path)
     answers = question["answers"]
-    answers_markup = get_answers_markup(answers)    
+    question_text = "Что это за картина?"
+    answers_text = ""
+    for idx, answer in enumerate(answers):
+        answer_text = answer["answer"]
+        is_correct = answer["is_correct"]
+        answer_number = idx + 1
+        answers_text += f"{answer_number}. {answer_text}.\n"
+        if is_correct:
+            correct_answer_idx = idx
+    question_with_answers = question_text + "\n"*2 + answers_text
+    answers_quantity = len(answers)
+    answers_markup = get_answers_markup(
+        answers_quantity,
+        correct_answer_idx
+    )
     await msg.answer_photo(
         image
     )
     await msg.answer(
-        text="Что это за картина?",
+        text=question_with_answers,
         reply_markup=answers_markup
     )
     await state.update_data(question_number=1)
