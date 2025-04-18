@@ -19,17 +19,23 @@ async def answer_handler(
     data = await state.get_data()
     correct = data.get("correct", 0)
     is_correct_answer = int(cb.data)
+    questions = data["questions"]
     if is_correct_answer:
         correct += 1
         await state.update_data(correct=correct)
-        answer_text = "✅Правильно! Молодец."
+        answer_text = "Правильно."
     else:
-        answer_text = "Неправильно."
+        previous_question_number = data["question_number"] - 1
+        previous_question = questions[previous_question_number]
+        for answer in previous_question["answers"]:
+            if answer["is_correct"]:
+                correct_answer = answer["answer"]
+        answer_text = \
+            f"Неправильно.\n<b>Правильный ответ</b>: <i>{correct_answer}</i>."
     await cb.message.answer(
         text=answer_text
     )
     # Selecting a question
-    questions = data["questions"]
     question_number = data["question_number"]
     if len(questions) > question_number:
         question = questions[question_number]
