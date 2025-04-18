@@ -1,11 +1,11 @@
-import os
-
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-from aiogram.types import Message, FSInputFile
+from aiogram.types import Message
 import aiohttp
 
-from constants import API_URL, IMAGES_FOLDER
+from constants import API_URL
+from helpers.image import get_image
+from helpers.text import get_text_and_correct_answer
 from markups.answers import get_answers_markup
 from router import router
 from states import Questions
@@ -21,19 +21,10 @@ async def start_handler(msg: Message, state: FSMContext) -> None:
     await state.update_data(questions=questions)
     question = questions[0]
     image_name = question["image"]
-    image_path = os.path.join(IMAGES_FOLDER, image_name)
-    image = FSInputFile(image_path)
+    image = get_image(image_name)
     answers = question["answers"]
-    question_text = "<b>Что это за картина?</b>"
-    answers_text = ""
-    for idx, answer in enumerate(answers):
-        answer_text = answer["answer"]
-        is_correct = answer["is_correct"]
-        answer_number = idx + 1
-        answers_text += f"{answer_number}. <i>{answer_text}</i>.\n"
-        if is_correct:
-            correct_answer_idx = idx
-    question_with_answers = question_text + "\n"*2 + answers_text
+    question_with_answers, correct_answer_idx = \
+            get_text_and_correct_answer(answers)
     answers_quantity = len(answers)
     answers_markup = get_answers_markup(
         answers_quantity,

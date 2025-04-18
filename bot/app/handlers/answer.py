@@ -1,10 +1,9 @@
-import os
-
 from aiogram import F
 from aiogram.fsm.context import FSMContext
-from aiogram.types import CallbackQuery, FSInputFile
+from aiogram.types import CallbackQuery
 
-from constants import IMAGES_FOLDER
+from helpers.image import get_image
+from helpers.text import get_text_and_correct_answer
 from markups.answers import get_answers_markup
 from router import router
 from states import Questions
@@ -40,19 +39,10 @@ async def answer_handler(
     if len(questions) > question_number:
         question = questions[question_number]
         image_name = question["image"]
-        image_path = os.path.join(IMAGES_FOLDER, image_name)
-        image = FSInputFile(image_path)
+        image = get_image(image_name)
         answers = question["answers"]
-        question_text = "<b>Что это за картина?</b>"
-        answers_text = ""
-        for idx, answer in enumerate(answers):
-            answer_text = answer["answer"]
-            is_correct = answer["is_correct"]
-            answer_number = idx + 1
-            answers_text += f"{answer_number}. <i>{answer_text}</i>.\n"
-            if is_correct:
-                correct_answer_idx = idx
-        question_with_answers = question_text + "\n"*2 + answers_text
+        question_with_answers, correct_answer_idx = \
+            get_text_and_correct_answer(answers)
         answers_quantity = len(answers)
         answers_markup = get_answers_markup(
             answers_quantity,
