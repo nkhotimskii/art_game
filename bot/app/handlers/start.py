@@ -24,13 +24,13 @@ async def start_handler(msg: Message, state: FSMContext) -> None:
     image_path = os.path.join(IMAGES_FOLDER, image_name)
     image = FSInputFile(image_path)
     answers = question["answers"]
-    question_text = "Что это за картина?"
+    question_text = "<b>Что это за картина?</b>"
     answers_text = ""
     for idx, answer in enumerate(answers):
         answer_text = answer["answer"]
         is_correct = answer["is_correct"]
         answer_number = idx + 1
-        answers_text += f"{answer_number}. {answer_text}.\n"
+        answers_text += f"{answer_number}. <i>{answer_text}</i>.\n"
         if is_correct:
             correct_answer_idx = idx
     question_with_answers = question_text + "\n"*2 + answers_text
