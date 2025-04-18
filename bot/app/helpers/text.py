@@ -1,7 +1,7 @@
 from typing import List, Dict
 
 
-def get_text(answers: List[Dict]) -> str:
+def get_text_and_correct_answer(answers: List[Dict]) -> str:
     question_text = "<b>Что это за картина?</b>"
     answers_text = ""
     for idx, answer in enumerate(answers):
